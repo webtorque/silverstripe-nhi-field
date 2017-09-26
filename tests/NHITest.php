@@ -22,7 +22,8 @@ class NHITest extends SapphireTest
         $this->assertEquals('Dummy', $field->getName());
         $this->assertEquals('Dummy Title', $field->Title());
 
-        $nhi = new NHI('Dummy', ['nullifyEmpty' => true]);
+        $nhi = new NHI('Dummy', ['nullifyEmpty' => false]);
+        $field = $nhi->scaffoldFormField('Dummy Title');
         $this->assertInstanceOf('NullableField', $field);
     }
 }
