@@ -34,4 +34,4 @@ before_script:
   - cd ~/builds/ss
 
 script:
-  - vendor/bin/phpunit notification/tests
+  - vendor/bin/phpunit nhi-field/tests
