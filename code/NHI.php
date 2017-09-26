@@ -32,6 +32,12 @@ class NHI extends Varchar
         parent::__construct($name, 7, $options);
     }
 
+    /**
+     * @inheritDoc
+     * @param  string|null $title  Form Field title.
+     * @param  array $params
+     * @return FormField
+     */
     public function scaffoldFormField($title = null, $params = null)
     {
         if (!$this->nullifyEmpty) {
