@@ -1,0 +1,4 @@
+en:
+  NHIField:
+    VALIDATEPATTERN: 'The value for {name} must be a sequence of 3 letters followed by 4 digits.'
+    VALIDATECHECKSUM: 'The value for {name} is not a valid NHI number.'

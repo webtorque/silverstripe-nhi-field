@@ -1,0 +1,16 @@
+/vendor/
+/framework
+/cms
+/reports
+/siteconfig
+/trait-loader
+composer.lock
+_ss_environment.php
+.buildpath
+.project
+.settings
+.solr
+.ea
+.idea
+.DS_Store
+.vagrant
