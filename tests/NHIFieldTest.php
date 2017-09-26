@@ -58,4 +58,25 @@ class NHIFieldTest extends SapphireTest
 
         $this->assertEquals('EPT6335', $field->dataValue(), 'dataValue() should return an all uppercase string.');
     }
+
+    public function testPattern()
+    {
+        $regex = '^[a-zA-Z]{3}[0-9]{4}$';
+
+        $field = NHIField::create('dummy', 'dummy', 'ept6335', null, false);
+        $this->assertFalse((bool)$field->getAttribute('pattern'), 'NHI Field pattern should be unset when $html5pattern is false.');
+        $this->assertFalse($field->getHtml5Pattern(), 'NHI Field pattern should be unset when $html5pattern is false.');
+
+        $field = NHIField::create('dummy', 'dummy', 'ept6335', null, true);
+        $this->assertEquals($regex, $field->getAttribute('pattern'), 'NHI Field pattern should be set when $html5pattern is true.');
+        $this->assertTrue($field->getHtml5Pattern(), 'NHI Field pattern should be set when $html5pattern is true.');
+
+        $this->assertEquals($field, $field->setHtml5Pattern(false));
+        $this->assertFalse((bool)$field->getAttribute('pattern'), 'NHI Field pattern should be unset when $html5pattern is false.');
+        $this->assertFalse($field->getHtml5Pattern(), 'NHI Field pattern should be unset when $html5pattern is false.');
+
+        $this->assertEquals($field, $field->setHtml5Pattern(true));
+        $this->assertEquals($regex, $field->getAttribute('pattern'), 'NHI Field pattern should be set when $html5pattern is true.');
+        $this->assertTrue($field->getHtml5Pattern(), 'NHI Field pattern should be set when $html5pattern is true.');
+    }
 }

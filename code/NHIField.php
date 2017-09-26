@@ -9,20 +9,51 @@
  */
 class NHIField extends TextField
 {
+    /**
+     * Regular expression to validate an NHI.
+     * @var string
+     */
+    const REGEX_PATTERN = '^[a-zA-Z]{3}[0-9]{4}$';
+
     // Make sure we apply the text class to the field so it displays like a normal text field in the CMS.
     private static $default_classes = array('nhi', 'text');
 
     /**
      * Instanciate a new NHIField.
-     * @param string $name      Form field name
-     * @param string $title     Label to use for the field.
-     * @param string $value     Inital value
-     * @param Form   $form      Form to add the field to.
+     * @param string $name          Form field name
+     * @param string $title         Label to use for the field.
+     * @param string $value         Inital value
+     * @param Form   $form          Form to add the field to.
+     * @param bool   $html5pattern  Output a pattern attribute on the input.
      */
-    public function __construct($name, $title = null, $value = '', $form = null)
+    public function __construct($name, $title = null, $value = '', $form = null, $html5pattern=false)
     {
         parent::__construct($name, $title, $value, 7, $form);
-        $this->setAttribute('pattern', '[A-Za-z]{3}[0-9]{4}');
+        $this->setHtml5Pattern($html5pattern);
+    }
+
+    /**
+     * Get whatever to output the `pattern` attribute on the input tag.
+      * @return boolean
+     */
+    public function getHtml5Pattern()
+    {
+        return $this->getAttribute('pattern') == self::REGEX_PATTERN;
+    }
+
+    /**
+     * Set whatever to output the `pattern` attribute on the input tag.
+     * @param  boolean $enabled Enable or disable the pattern.
+     * @return NHIField
+     */
+    public function setHtml5Pattern($enabled)
+    {
+        if ($enabled) {
+            $this->setAttribute('pattern', self::REGEX_PATTERN);
+        } else {
+            $this->setAttribute('pattern', '');
+        }
+        return $this;
     }
 
     /**
@@ -57,14 +88,14 @@ class NHIField extends TextField
         $nhi = $this->value;
 
         // Step 1 and 2
-        $pattern = "/^([a-zA-Z]){3}([0-9]){4}?$/";
+        $pattern = "/" . self::REGEX_PATTERN . "/";
         if (!preg_match($pattern, $nhi)) {
             $validator->validationError(
                   $this->name,
                  _t(
                      'NHIField.VALIDATEPATTERN',
                      'The value for {name} must be a sequence of 3 letters followed by 4 digits.',
-                     array('name' => $this->getName())
+                     array('name' => $this->Title())
                  ),
                  "validation"
              );
@@ -112,7 +143,7 @@ class NHIField extends TextField
                  _t(
                      'NHIField.VALIDATECHECKSUM',
                      'The value for {name} is not a valid NHI number.',
-                     array('name' => $this->getName())
+                     array('name' => $this->Title())
                  ),
                  "validation"
              );
@@ -135,7 +166,7 @@ class NHIField extends TextField
                  _t(
                      'NHIField.VALIDATECHECKSUM',
                      'The value for {name} is not a valid NHI number.',
-                     array('name' => $this->getName())
+                     array('name' => $this->Title())
                  ),
                  "validation"
              );

@@ -19,7 +19,7 @@ composer require webtorque/silverstripe-nhi-field:^0.0
 ```
 
 ## Usage
-To specify that an NHI db field on a DataObject:
+To specify a NHI db field on a DataObject:
 ```php
 class Patient extends DataObject {
     private static $db = [
@@ -28,17 +28,29 @@ class Patient extends DataObject {
 }
 ```
 
-The `NHI` field type is equivalent to `Varchar(7)`. When scaffolding a form, any NHI db field will autmatically use
+The `NHI` field type is equivalent to `Varchar(7)`. When scaffolding a form, any NHI db field will autmatically use the
 `NHIField` form field instead of `TextField`.
 
 ## Validating an NHI
-Just use the `NHIField` in your form and validate your Form like you would normally.
+Just use the `NHIField` in your form and validate your Form normally.
 
-`NHIField` is a simple extension `TextField` with the following alteration:
+```php
+
+$nhiField = NHIField::create(
+    $name = 'nhi',                      // required
+    $title = 'National Health Index',   // optional
+    $value = 'CGC2720',                 // optional
+    $form = null,                       // optional
+    $html5pattern = false               // optional, output an `html5` pattern attribute
+);
+
+```
+
+`NHIField` is a simple extension of `TextField` with the following alteration:
 * The `maxlength` is automatically set to 7.
-* The `pattern` attribute is set to a proper regular expression. This provides some limited front end validation for modern browsers.
 * When setting the value of the field, it will automatically be converted to uppercase.
 * The value is validated with a basic regex and with a [checksum as specified by the NHI standard](https://en.wikipedia.org/wiki/NHI_Number#Format).
+* You can ouput an html5 `pattern` attribute with `$nhiField->setHtml5Pattern(true);`.
 
 For testing purposes, checksum validation can be disabled by setting the `disable_checksum_validation` flag on the `NHIField` config.
 ```php
